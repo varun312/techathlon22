@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
+    require("dotenv").config();
 }
 const express = require("express");
 const mongoose = require("mongoose");
@@ -10,7 +10,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const cookieParser = require("cookie-parser");
 const { checkUser } = require("./middleware/Middleware");
 const dbURL = process.env.DB_URL;
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 
@@ -25,12 +25,12 @@ app.set("view engine", "ejs");
 
 // DB CONNECTION
 async function connectDB() {
-  await mongoose.connect(dbURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // useCreateIndex: true,
-  });
-  app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
+    await mongoose.connect(dbURL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        // useCreateIndex: true,
+    });
+    app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
 }
 connectDB();
 

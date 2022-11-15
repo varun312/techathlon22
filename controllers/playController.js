@@ -4,20 +4,20 @@ const jwt = require("jsonwebtoken");
 const Question = require("../models/Question");
 
 module.exports.play_levels_get = async (req, res, next) => {
-  res.render("play-levels", {level: res.locals.user.level})
-}
+  res.render("play-levels", { level: res.locals.user.level });
+};
 
 module.exports.play_levelnum_get = async (req, res, next) => {
-  const level = req.params.level
-  const ques = await Question.findOne({number: parseInt(level)})
-  res.render("play-level-num", {ques})
-}
+  const level = req.params.level;
+  const ques = await Question.findOne({ number: parseInt(level) });
+  res.render("play-level-num", { ques });
+};
 
 module.exports.play_get = async (req, res, next) => {
   if (Math.floor(new Date().getTime() / 1000) <= 0) {
     res.render("timer", { isCorrect: false });
   } else {
-    console.log(res.locals.question)
+    console.log(res.locals.question);
     res.render("play", { isCorrect: false });
 
     // res.send("taklu 22 lesgo")
@@ -115,5 +115,17 @@ module.exports.question_get = async (req, res) => {
 };
 
 module.exports.question_num_get = async (req, res) => {
-  res.status(201).json({ question: res.locals.question });
+  try {
+    const currUser = await User.findOne({ email: res.locals.user.email });
+    const level = req.params.ques;
+
+    if (level > currUser.level) {
+      return res.json({ err: "err" });
+    }
+
+    const question = await Question.findOne({ number: level });
+    return res.json({ question });
+  } catch (err) {
+    res.json({ err });
+  }
 };
