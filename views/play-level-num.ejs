@@ -48,7 +48,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <link rel="icon" href="/assets/cw-logo.png" />
     <meta
       name="description"
@@ -76,14 +80,15 @@
     <main>
       <nav>
         <a href="/" class="navMid">CW</a>
-        <div class="navLeft">
-        </div>
-        <div class="navRight">  
+        <div class="navLeft"></div>
+        <div class="navRight">
           <a class="navLink" href="/">Home</a>
           <a class="navLink" href="/play">Play</a>
           <a class="navLink" href="/leaderboard">Leaderboard</a>
           <a class="navLink" href="/rules">Rules</a>
-          <a class="navBtn" target="_blank" href="https://discord.gg/fxhUHe582A">Join Discord</a>
+          <a class="navBtn" target="_blank" href="https://discord.gg/fxhUHe582A"
+            >Join Discord</a
+          >
           <div class="ham">
             <div class="hamLine"></div>
           </div>
@@ -101,7 +106,9 @@
         >
         <a style="--navD: 0.44s" class="navLink" href="/">Home</a>
         <a style="--navD: 0.44s" class="navLink" href="/play">Play</a>
-        <a style="--navD: 0.44s" class="navLink" href="/leaderboard">Leaderboard</a>
+        <a style="--navD: 0.44s" class="navLink" href="/leaderboard"
+          >Leaderboard</a
+        >
         <a style="--navD: 0.44s" class="navLink" href="/rules">Rules</a>
       </div>
 
@@ -111,18 +118,18 @@
         <h1 id="text"></h1>
         <img src="" alt="" id="imagePath" />
 
-        <form action="/play" method="POST" id="form">
+        <form method="POST" id="form">
           <div class="input">
             <input
               class="answer string"
               type="text"
-              placeholder="Answer"
+              placeholder="Not for answering; only to view previous questions"
               name="answer"
               autocomplete="off"
               id="answer"
+              disabled
             />
           </div>
-          <button class="btn" form="form">Submit</button>
         </form>
       </div>
     </main>
@@ -153,6 +160,10 @@
       const form = document.querySelector("form");
       const answerBox = document.querySelector("form #answer");
       const answerError = document.querySelector("form .error");
+
+      document.querySelector("form").addEventListener("submit", (e) => {
+        e.preventDefault();
+      });
 
       window.onload = function () {
         var reloading = sessionStorage.getItem("reloading");
@@ -185,7 +196,6 @@
       }
 
       getQues();
-
     </script>
     <script
       type="text/javascript"

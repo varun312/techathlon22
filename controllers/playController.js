@@ -8,9 +8,21 @@ module.exports.play_levels_get = async (req, res, next) => {
 };
 
 module.exports.play_levelnum_get = async (req, res, next) => {
-  const level = req.params.level;
-  const ques = await Question.findOne({ number: parseInt(level) });
-  res.render("play-level-num", { ques });
+  try {
+    const level = req.params.level;
+    const ques = await Question.findOne({ number: parseInt(level) }).select({
+      answer: 0,
+      _id: 0,
+    });
+
+    if (ques) {
+      return res.render("play-level-num", { ques });
+    } else {
+      return res.json({ ques: res.locals.question });
+    }
+  } catch (err) {
+    return res.json({ ques: res.locals.question });
+  }
 };
 
 module.exports.play_get = async (req, res, next) => {
@@ -123,7 +135,10 @@ module.exports.question_num_get = async (req, res) => {
       return res.json({ err: "err" });
     }
 
-    const question = await Question.findOne({ number: level });
+    const question = await Question.findOne({ number: level }).select({
+      answer: 0,
+      _id: 0,
+    });
     return res.json({ question });
   } catch (err) {
     res.json({ err });
