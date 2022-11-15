@@ -154,40 +154,6 @@
       const answerBox = document.querySelector("form #answer");
       const answerError = document.querySelector("form .error");
 
-      function answerSubmit() {
-        if (answerBox.value.length < 1) {
-          answerError.innerHTML = "Please enter an answer";
-          answerBox.classList.add("errorInput");
-        } else {
-          document.getElementById("form").submit();
-        }
-      }
-      answerBox.addEventListener("input", () => {
-        let input = answerBox.value;
-        let output = "";
-        if (input.length > 0) {
-          for (let i = 0; i < input.length; i++) {
-            if (input.charAt(i) != " ") {
-              output += input.charAt(i).toLowerCase();
-            }
-          }
-          answerBox.value = output;
-        }
-      });
-      answerBox.addEventListener("focus", () => {
-        if (answerBox.classList.contains("errorInput")) {
-          answerBox.classList.remove("errorInput");
-          answerError.innerHTML = "&nbsp;";
-        }
-      });
-      answerBox.addEventListener("keydown", (e) => {
-        if (e.keyCode == 13) {
-          if (answerBox.value.length == 0) {
-            e.preventDefault();
-          }
-        }
-      });
-
       window.onload = function () {
         var reloading = sessionStorage.getItem("reloading");
         if (reloading) {
@@ -203,7 +169,7 @@
       const text = document.getElementById("text");
       const imagePath = document.getElementById("imagePath");
       async function getQues() {
-        const res = await fetch("/getQuestion", {
+        const res = await fetch("/getQuestion/<%= ques.number %>", {
           method: "GET",
         });
         data = await res.json();
@@ -220,32 +186,6 @@
 
       getQues();
 
-      const ansError = document.querySelector(".answer.error");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const answer = document.querySelector(".answer.string").value;
-
-        try {
-          const res = await fetch("/play", {
-            method: "POST",
-            body: JSON.stringify({ answerString: answer }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          if (!data.correct) {
-            Toastify({
-              backgroundColor: "tomato",
-              text: "Wrong Answer",
-            }).showToast();
-          } else {
-            sessionStorage.setItem("reloading", "true");
-            document.location.reload();
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      });
     </script>
     <script
       type="text/javascript"

@@ -3,12 +3,24 @@ const Log = require("../models/Log");
 const jwt = require("jsonwebtoken");
 const Question = require("../models/Question");
 
+module.exports.play_levels_get = async (req, res, next) => {
+  res.render("play-levels", {level: res.locals.user.level})
+}
+
+module.exports.play_levelnum_get = async (req, res, next) => {
+  const level = req.params.level
+  const ques = await Question.findOne({number: parseInt(level)})
+  res.render("play-level-num", {ques})
+}
+
 module.exports.play_get = async (req, res, next) => {
-  if (Math.floor(new Date().getTime() / 1000) <= 1668535920) {
+  if (Math.floor(new Date().getTime() / 1000) <= 0) {
     res.render("timer", { isCorrect: false });
   } else {
-    // res.render("play", { isCorrect: false });
-    res.send("taklu 22 lesgo")
+    console.log(res.locals.question)
+    res.render("play", { isCorrect: false });
+
+    // res.send("taklu 22 lesgo")
   }
 };
 
@@ -99,5 +111,9 @@ module.exports.leaderboard_get = async (req, res) => {
 };
 
 module.exports.question_get = async (req, res) => {
+  res.status(201).json({ question: res.locals.question });
+};
+
+module.exports.question_num_get = async (req, res) => {
   res.status(201).json({ question: res.locals.question });
 };
