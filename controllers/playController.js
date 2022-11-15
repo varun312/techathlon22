@@ -73,8 +73,8 @@ module.exports.leaderboard_get = async (req, res) => {
     if (!data.includes(user)) data.push(user);
   }
 
-  let kevin = await User.findOne({ name: "Kevin" });
-  data.unshift(kevin);
+  // let kevin = await User.findOne({ name: "Kevin" });
+  // data.unshift(kevin);
 
   leaderboard = [];
   cnt = 1;

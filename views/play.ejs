@@ -42,12 +42,13 @@
     </style>
 
     <link rel="stylesheet" href="/css/all.css" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/play.css" />
 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="icon" href="/assets/cw-logo.png" />
     <meta
       name="description"
@@ -62,6 +63,7 @@
   <body class="dark">
     <script>
       let theme = localStorage.getItem("theme");
+
       if (theme == "light") {
         document.body.classList.add("light");
         theme = localStorage.setItem("theme", "light");
@@ -72,7 +74,7 @@
     </script>
 
     <main>
-      <nav>
+      <<nav>
         <a href="/" class="navMid">CW</a>
         <div class="navLeft">
         </div>
@@ -102,32 +104,28 @@
         >
       </div>
 
-      <section class="login">
-        <form action="/signup">
-          <h1>Login</h1>
-          <div class="input">
-            <input type="text" name="email" placeholder="Email" required />
-          </div>
+      <div class="play">
+        <h1 id="lvlnum"></h1>
+        <h1 id="quesTitle"></h1>
+        <h1 id="text"></h1>
+        <img src="" alt="" id="imagePath" />
+
+        <form action="/play" method="POST" id="form">
           <div class="input">
             <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
+              class="answer string"
+              type="text"
+              placeholder="Answer"
+              name="answer"
+              autocomplete="off"
+              id="answer"
             />
           </div>
-          <h4 class="err"></h4>
-          <button class="btn">login</button>
-
-          <h4 class="sign">
-            Not signed up?&nbsp;<a href="/signup">Sign up here</a>
-          </h4>
+          <button class="btn" form="form">Submit</button>
         </form>
-        <div class="ban">
-          <img src="/assets/cw-logo.png" alt="" />
-        </div>
-      </section>
+      </div>
     </main>
+
     <footer>
       <p>
         <span id="titleF"></span
@@ -149,35 +147,110 @@
       </div>
     </footer>
 
+    <script src="/js/mode.js"></script>
     <script>
       const form = document.querySelector("form");
-      const err = document.querySelector(".err");
+      const answerBox = document.querySelector("form #answer");
+      const answerError = document.querySelector("form .error");
+
+      function answerSubmit() {
+        if (answerBox.value.length < 1) {
+          answerError.innerHTML = "Please enter an answer";
+          answerBox.classList.add("errorInput");
+        } else {
+          document.getElementById("form").submit();
+        }
+      }
+      answerBox.addEventListener("input", () => {
+        let input = answerBox.value;
+        let output = "";
+        if (input.length > 0) {
+          for (let i = 0; i < input.length; i++) {
+            if (input.charAt(i) != " ") {
+              output += input.charAt(i).toLowerCase();
+            }
+          }
+          answerBox.value = output;
+        }
+      });
+      answerBox.addEventListener("focus", () => {
+        if (answerBox.classList.contains("errorInput")) {
+          answerBox.classList.remove("errorInput");
+          answerError.innerHTML = "&nbsp;";
+        }
+      });
+      answerBox.addEventListener("keydown", (e) => {
+        if (e.keyCode == 13) {
+          if (answerBox.value.length == 0) {
+            e.preventDefault();
+          }
+        }
+      });
+
+      window.onload = function () {
+        var reloading = sessionStorage.getItem("reloading");
+        if (reloading) {
+          sessionStorage.removeItem("reloading");
+          Toastify({
+            text: "Correct Answer!",
+          }).showToast();
+        }
+      };
+
+      const lvlnum = document.getElementById("lvlnum");
+      const quesTitle = document.getElementById("quesTitle");
+      const text = document.getElementById("text");
+      const imagePath = document.getElementById("imagePath");
+      async function getQues() {
+        const res = await fetch("/getQuestion", {
+          method: "GET",
+        });
+        data = await res.json();
+        lvlnum.innerHTML = `Level ${data.question.number}`;
+        quesTitle.innerHTML = data.question.quesTitle;
+        text.innerHTML = data.question.text;
+        document.title = data.question.pageTitle;
+        const c = document.createComment(data.question.comments);
+        document.body.appendChild(c);
+        try {
+          imagePath.src = data.question.imagePath;
+        } catch (err) {}
+      }
+
+      getQues();
+
+      const ansError = document.querySelector(".answer.error");
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        // reset errors
-        err.textContent = "";
-        // get values
-        const email = form.email.value;
-        const password = form.password.value;
+
+        const answer = document.querySelector(".answer.string").value;
+
         try {
-          const res = await fetch("/login", {
+          const res = await fetch("/play", {
             method: "POST",
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ answerString: answer }),
             headers: { "Content-Type": "application/json" },
           });
           const data = await res.json();
-          if (data.errors) {
-            console.log(data.errors);
-            err.textContent = data.errors.email || data.errors.password;
-          }
-          if (data.user) {
-            location.assign("/");
+          if (!data.correct) {
+            Toastify({
+              backgroundColor: "tomato",
+              text: "Wrong Answer",
+            }).showToast();
+          } else {
+            sessionStorage.setItem("reloading", "true");
+            document.location.reload();
           }
         } catch (err) {
           console.log(err);
         }
       });
     </script>
-    <script src="/js/mode.js"></script>
+    <% if (question.comments !== "") { %>
+    <!<%= question.comments %>> <% } %>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
   </body>
 </html>

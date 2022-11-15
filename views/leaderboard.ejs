@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="eng">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,7 +41,7 @@
     </style>
 
     <link rel="stylesheet" href="/css/all.css" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/lead.css" />
 
     <link
       rel="stylesheet"
@@ -62,6 +61,7 @@
   <body class="dark">
     <script>
       let theme = localStorage.getItem("theme");
+
       if (theme == "light") {
         document.body.classList.add("light");
         theme = localStorage.setItem("theme", "light");
@@ -96,38 +96,33 @@
           target="_blank"
           >Join Discord</a
         >
+        <a style="--navD: 0.44s" class="navLink" href="/">Home</a>
         <a style="--navD: 0.44s" class="navLink" href="/play">Play</a>
-        <a style="--navD: 0.44s" class="navLink" href="/leaderboard"
-          >Leaderboard</a
-        >
       </div>
 
-      <section class="login">
-        <form action="/signup">
-          <h1>Login</h1>
-          <div class="input">
-            <input type="text" name="email" placeholder="Email" required />
-          </div>
-          <div class="input">
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <h4 class="err"></h4>
-          <button class="btn">login</button>
-
-          <h4 class="sign">
-            Not signed up?&nbsp;<a href="/signup">Sign up here</a>
-          </h4>
-        </form>
-        <div class="ban">
-          <img src="/assets/cw-logo.png" alt="" />
-        </div>
+      <section class="ldb">
+        <h1> Leaderboard</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Team Name</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < leaderboard.length; i++) { %>
+            <tr>
+              <td><%= leaderboard[i].rank %></td>
+              <td><%= leaderboard[i].name %></td>
+              <td><%= leaderboard[i].level %></td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
       </section>
     </main>
+
     <footer>
       <p>
         <span id="titleF"></span
@@ -149,35 +144,7 @@
       </div>
     </footer>
 
-    <script>
-      const form = document.querySelector("form");
-      const err = document.querySelector(".err");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        // reset errors
-        err.textContent = "";
-        // get values
-        const email = form.email.value;
-        const password = form.password.value;
-        try {
-          const res = await fetch("/login", {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          if (data.errors) {
-            console.log(data.errors);
-            err.textContent = data.errors.email || data.errors.password;
-          }
-          if (data.user) {
-            location.assign("/");
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      });
-    </script>
     <script src="/js/mode.js"></script>
+    <!-- <script src="/js/footer.js"></script> -->
   </body>
 </html>

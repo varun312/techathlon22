@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const adminController = require('../controllers/adminController');
-const { requireAuth, checkUser, levelInfo } = require('./helper.js')
+const { requireAuth, checkUser, levelInfo } = require('../middleware/Middleware')
 
 const router = Router();
 

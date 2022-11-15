@@ -48,4 +48,6 @@ questionSchema.statics.checkAns = async function(number, clientAnswer) {
     }
   };
 
-module.exports = mongoose.model("Question",questionSchema);
+  module.exports = mongoose.model("Question",questionSchema); 
+
+

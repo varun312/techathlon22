@@ -101,10 +101,18 @@
           >Leaderboard</a
         >
       </div>
-
-      <section class="login">
+      <section class="login signup">
         <form action="/signup">
-          <h1>Login</h1>
+          <h1>Sign up</h1>
+          <h5>This signup form is only for individual registrations. For school registration dm pr0coder#2007 on discord with your school name</h5> <h6> (spam mat karna bhai ek ghante ke andar de dunga tumhe)</h6>
+          <br>
+
+          <div class="input">
+            <input type="text" name="name" placeholder="Real name" required />
+          </div>
+          <div class="input">
+            <input type="text" name="discordUsername" placeholder="Discord Username" required />
+          </div>
           <div class="input">
             <input type="text" name="email" placeholder="Email" required />
           </div>
@@ -116,11 +124,11 @@
               required
             />
           </div>
-          <h4 class="err"></h4>
-          <button class="btn">login</button>
 
+          <h4 class="err"></h4>
+          <button class="btn">Sign up</button>
           <h4 class="sign">
-            Not signed up?&nbsp;<a href="/signup">Sign up here</a>
+            Already signed up?&nbsp;<a href="/login">Login here</a>
           </h4>
         </form>
         <div class="ban">
@@ -128,6 +136,8 @@
         </div>
       </section>
     </main>
+
+    <a id="redirect" href="/" style="display: none">Link</a>
     <footer>
       <p>
         <span id="titleF"></span
@@ -149,33 +159,42 @@
       </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
       const form = document.querySelector("form");
       const err = document.querySelector(".err");
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        console.log("ASJUDBASUYHD")
         // reset errors
         err.textContent = "";
         // get values
+        const name = form.name.value;
+        const discordUsername = form.discordUsername.value;
         const email = form.email.value;
         const password = form.password.value;
         try {
-          const res = await fetch("/login", {
+          const res = await fetch("/signup", {
             method: "POST",
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ name, discordUsername, email, password }),
             headers: { "Content-Type": "application/json" },
           });
           const data = await res.json();
-          if (data.errors) {
-            console.log(data.errors);
-            err.textContent = data.errors.email || data.errors.password;
-          }
+          (data);
           if (data.user) {
-            location.assign("/");
+            console.log("user present");
+            $("#redirect")[0].click();
           }
-        } catch (err) {
-          console.log(err);
-        }
+          if (data.errors.email) {
+            err.textContent = data.errors.email;
+          }
+          if (data.errors.username) {
+            err.textContent = data.errors.username;
+          }
+          if (data.errors.password) {
+            err.textContent = data.errors.password;
+          }
+        } catch (err) {console.log(err)}
       });
     </script>
     <script src="/js/mode.js"></script>

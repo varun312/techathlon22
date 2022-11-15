@@ -42,12 +42,13 @@
     </style>
 
     <link rel="stylesheet" href="/css/all.css" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/play.css" />
 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="icon" href="/assets/cw-logo.png" />
     <meta
       name="description"
@@ -72,7 +73,7 @@
     </script>
 
     <main>
-      <nav>
+      <<nav>
         <a href="/" class="navMid">CW</a>
         <div class="navLeft">
         </div>
@@ -102,32 +103,29 @@
         >
       </div>
 
-      <section class="login">
-        <form action="/signup">
-          <h1>Login</h1>
-          <div class="input">
-            <input type="text" name="email" placeholder="Email" required />
-          </div>
-          <div class="input">
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <h4 class="err"></h4>
-          <button class="btn">login</button>
-
-          <h4 class="sign">
-            Not signed up?&nbsp;<a href="/signup">Sign up here</a>
-          </h4>
-        </form>
-        <div class="ban">
-          <img src="/assets/cw-logo.png" alt="" />
-        </div>
-      </section>
+      <div class="coutdown">
+        <h1 style="margin-top: 24vh;text-align: center;font-size:3rem;">Techathlon begins in</h1>
+        <h1 style="margin-bottom: 24vh;text-align: center;font-size:3rem;" id="coutdown"></h1>
+            <script>
+            var countDownDate = new Date("August 17, 2021 23:42:00").getTime();
+            var x = setInterval(function() {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            var days = Math.floor((distance / 86400 / 1000));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("coutdown").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("coutdown").innerHTML = "EXPIRED";
+            }
+            }, 1000);
+            </script>
+      </div>
     </main>
+
     <footer>
       <p>
         <span id="titleF"></span
@@ -149,35 +147,7 @@
       </div>
     </footer>
 
-    <script>
-      const form = document.querySelector("form");
-      const err = document.querySelector(".err");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        // reset errors
-        err.textContent = "";
-        // get values
-        const email = form.email.value;
-        const password = form.password.value;
-        try {
-          const res = await fetch("/login", {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          if (data.errors) {
-            console.log(data.errors);
-            err.textContent = data.errors.email || data.errors.password;
-          }
-          if (data.user) {
-            location.assign("/");
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      });
-    </script>
+
     <script src="/js/mode.js"></script>
   </body>
 </html>

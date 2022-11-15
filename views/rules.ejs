@@ -42,7 +42,7 @@
     </style>
 
     <link rel="stylesheet" href="/css/all.css" />
-    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/home.css" />
 
     <link
       rel="stylesheet"
@@ -51,7 +51,7 @@
     <link rel="icon" href="/assets/cw-logo.png" />
     <meta
       name="description"
-      content="We are the Code Warriors, the computer club of DPS Vasant Kunj. We're a team of technology addicts, our skills ranging from gaming to designing"
+      content="The cryptic hunt of Code Warriors: the tech club of dps vasant kunj."
     />
     <meta name="author" content="Kevin" />
     <meta
@@ -62,6 +62,7 @@
   <body class="dark">
     <script>
       let theme = localStorage.getItem("theme");
+
       if (theme == "light") {
         document.body.classList.add("light");
         theme = localStorage.setItem("theme", "light");
@@ -102,32 +103,50 @@
         >
       </div>
 
-      <section class="login">
-        <form action="/signup">
-          <h1>Login</h1>
-          <div class="input">
-            <input type="text" name="email" placeholder="Email" required />
-          </div>
-          <div class="input">
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <h4 class="err"></h4>
-          <button class="btn">login</button>
-
-          <h4 class="sign">
-            Not signed up?&nbsp;<a href="/signup">Sign up here</a>
-          </h4>
-        </form>
-        <div class="ban">
-          <img src="/assets/cw-logo.png" alt="" />
-        </div>
+      <section id="rules" class="rules">
+        <h1>Rules</h1>
+        <ul>
+          <li>
+            The hunt will last for 48 hours from 15th November 11:42 PM to 17th November
+            11:42 PM.
+          </li>
+          <li>
+            The answers are not case sensitive and can contain special
+            characters.
+          </li>
+          <li>
+            A minor typo will result in an incorrect answer, so be doubly sure
+            of what you enter. For example, if the answer is "codewarriors" and
+            you enter "code wariors", it will be considered incorrect.
+          </li>
+          <li>
+            Hints will be posted on the
+            <a href="https://discord.gg/Pb7pBhAySt"
+              ><span>discord server</span></a
+            >.
+          </li>
+          <li>Spamming the admins for hints is frowned upon.</li>
+          <li>
+            The use of any unfair means will be dealt with strictly and you
+            shall be permanently disqualified from participating.
+          </li>
+          <li>
+            There is no restriction on the number of times you can enter an
+            answer, so feel free to guess, although random answers are highly
+            unlikely to work.
+          </li>
+          <li>
+            If you feel you’re stuck at any point it’s best to clear your head
+            and starting thinking from scratch.
+          </li>
+          <li>
+            Refer to the learning resources if you are new to cryptic hunts.
+          </li>
+          <li>Have fun playing and don't panic.</li>
+        </ul>
       </section>
     </main>
+
     <footer>
       <p>
         <span id="titleF"></span
@@ -149,35 +168,6 @@
       </div>
     </footer>
 
-    <script>
-      const form = document.querySelector("form");
-      const err = document.querySelector(".err");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        // reset errors
-        err.textContent = "";
-        // get values
-        const email = form.email.value;
-        const password = form.password.value;
-        try {
-          const res = await fetch("/login", {
-            method: "POST",
-            body: JSON.stringify({ email, password }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          if (data.errors) {
-            console.log(data.errors);
-            err.textContent = data.errors.email || data.errors.password;
-          }
-          if (data.user) {
-            location.assign("/");
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      });
-    </script>
     <script src="/js/mode.js"></script>
   </body>
 </html>
