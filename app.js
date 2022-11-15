@@ -28,7 +28,7 @@ async function connectDB() {
   await mongoose.connect(dbURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
+    // useCreateIndex: true,
   });
   app.listen(PORT, () => console.log(`Listening on ${PORT}...`));
 }

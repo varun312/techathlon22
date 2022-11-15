@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
-    const auth = await bcrypt.compare(password, user.password);
-    if (auth) {
+    // const auth = await bcrypt.compare(password, user.password);
+    if (password==user.password) {
       return user;
     }
     throw Error("incorrect password");

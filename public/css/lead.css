@@ -16,6 +16,7 @@ table {
   border: 4px var(--borderWhite) solid;
   border-collapse: collapse;
   margin: 0 auto;
+  color: #3db594;
   margin-bottom: 5vh;
 }
 th,

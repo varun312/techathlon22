@@ -143,6 +143,10 @@ a {
   transform: scale(0.9);
 }
 
+i.hide {
+  display: none;
+  height: 0;
+}
 /* Head anim ------------------------------- */
 @keyframes shapes {
   0% {
@@ -283,6 +287,9 @@ nav a {
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
+}
+.navBtn.a {
+  color: white;
 }
 .navBtn:hover {
   color: var(--black);

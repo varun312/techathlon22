@@ -73,15 +73,16 @@
     </script>
 
     <main>
-      <<nav>
+      <nav>
         <a href="/" class="navMid">CW</a>
         <div class="navLeft">
         </div>
         <div class="navRight">  
           <a class="navLink" href="/">Home</a>
+          <a class="navLink" href="/play">Play</a>
           <a class="navLink" href="/leaderboard">Leaderboard</a>
           <a class="navLink" href="/rules">Rules</a>
-          <a class="navBtn" target="_blank" href="https://discord.gg/XK5TWYKdw9">Join Discord</a>
+          <a class="navBtn" target="_blank" href="https://discord.gg/fxhUHe582A">Join Discord</a>
           <div class="ham">
             <div class="hamLine"></div>
           </div>
@@ -97,17 +98,17 @@
           target="_blank"
           >Join Discord</a
         >
+        <a style="--navD: 0.44s" class="navLink" href="/">Home</a>
         <a style="--navD: 0.44s" class="navLink" href="/play">Play</a>
-        <a style="--navD: 0.44s" class="navLink" href="/leaderboard"
-          >Leaderboard</a
-        >
+        <a style="--navD: 0.44s" class="navLink" href="/leaderboard">Leaderboard</a>
+        <a style="--navD: 0.44s" class="navLink" href="/rules">Rules</a>
       </div>
 
       <div class="coutdown">
         <h1 style="margin-top: 24vh;text-align: center;font-size:3rem;">Techathlon begins in</h1>
         <h1 style="margin-bottom: 24vh;text-align: center;font-size:3rem;" id="coutdown"></h1>
             <script>
-            var countDownDate = new Date("August 17, 2021 23:42:00").getTime();
+            var countDownDate = new Date("November 15, 2022 23:42:00").getTime();
             var x = setInterval(function() {
             var now = new Date().getTime();
             var distance = countDownDate - now;

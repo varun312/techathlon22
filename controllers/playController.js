@@ -4,10 +4,11 @@ const jwt = require("jsonwebtoken");
 const Question = require("../models/Question");
 
 module.exports.play_get = async (req, res, next) => {
-  if (Math.floor(new Date().getTime() / 1000) <= 1629223920) {
+  if (Math.floor(new Date().getTime() / 1000) <= 1668535920) {
     res.render("timer", { isCorrect: false });
   } else {
-    res.render("play", { isCorrect: false });
+    // res.render("play", { isCorrect: false });
+    res.send("taklu 22 lesgo")
   }
 };
 
